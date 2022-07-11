@@ -11,18 +11,17 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-
-
+const modalhero = document.querySelector(".hero-section");
+const modalBody = document.querySelector(".modal-body");
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
 
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  modalContent.style.display = "block";
 }
 //////////////////////////////////////////////////////////////////////
-// close modal
 
 
 
@@ -33,101 +32,182 @@ let lastName = "";
 let email = "";
 let birthdate = "";
 let quantity = "";
-let citys = "";
 let terms ="";
 let arrayFormData = [];
+let citys = [];
+let p = document.createElement("p"); 
 let NameRegex = /^[A-Za-zéèïù\- ]*$/;
+let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ ;
+let birthdateRegex = /(\d{4})-(\d{2})-(\d{2})/;
 
+// Déclaration des variables pour cibler les éléments
 firstName = document.getElementById("first");
 lastName  = document.getElementById("last");
 email = document.getElementById("email");
 birthdate = document.getElementById("birthdate");
 quantity = document.getElementById("quantity");
-citys = document.getElementsByName("location");
-let p = document.createElement("p"); 
+const notSend = document.querySelector("div.modal-body form[name='reserve']");
+const btnClose = document.querySelector(".close");
+const modalContent = document.querySelector(".content");
+const merci = document.querySelector(".merci");
+const btnFermer = document.querySelector(".merci-btn-submit");
+
 
 // (e) pour empecher l'action par défaut au submit
-const notSend = document.querySelector("div.modal-body form[name='reserve']")
 notSend.addEventListener('submit', (e) => {
   e.preventDefault();
 }, false);
 
 // boucle sur chaque classe formdata
 formData.forEach((data) => arrayFormData.push(data));
-console.log(arrayFormData)
-function invalidinput(index, context, currentinput){
-              let p = document.createElement("p");
-
-              currentinput.style.borderColor = "red";
-              arrayFormData[index].setAttribute("data-error", "Veuillez entrer"+context);
-              // p.innerHTML = "Veuillez utilisez"+context;
-              // p.classList.add("important"+index);
-              // p.style.color = "red";
-   }
-
 
   // Vérification du Prénom
-  function firstNameValidation(){
+function firstNameValidation(){
     if (firstName.value.length >=2 && NameRegex.test(firstName.value)) {
-        firstName.style.borderColor = "green";
-       arrayFormData[0].removeAttribute("data-error")
-        return true
-      } else {
-        return invalidinput(0, "des lettres", firstName);     
-      }
-  };
+      firstName.style.borderColor = "green";
+      arrayFormData[0].setAttribute("data-error","");
+      arrayFormData[0].setAttribute("data-error-visible", false);
+      return true;
+        } else {
+          invalidinput(0, " entrez des lettres");  
+          return      false;
+        }
+    };
 
   // Vérification du Nom 
   function lastNameValidation(){
-     
     if (lastName.value.length >=2 && NameRegex.test(lastName.value)) {
-        lastName.style.borderColor = "green";
+      lastName.style.borderColor = "green";
+      arrayFormData[1].setAttribute("data-error", "");
+      arrayFormData[1].setAttribute("data-error-visible", false);
+      return true;
+        } else {
+          invalidinput(1, " entrez des lettres");    
+          return false;
+        }
+    };
+      // Vérification du mail
+
+    function emailValidation(){
+      if (emailRegex.test(email.value)) {
+        email.style.borderColor = "green";  
+        arrayFormData[2].setAttribute("data-error", "");
+        arrayFormData[2].setAttribute("data-error-visible", false);
         return true;
           } else {
-            return invalidinput(1, "des lettres", lastName);     
+            invalidinput(2, " entrez une adresse valide.");    
+            return false;
+          }
+      };
+
+      // Vérification date de naissance
+    function birthdateValidation(){
+      if (birthdateRegex.test(birthdate.value)) {
+        birthdate.style.borderColor = "green";  
+        arrayFormData[3].setAttribute("data-error", "");
+        arrayFormData[3].setAttribute("data-error-visible", false);
+        return true;
+          } else {
+            invalidinput(3, " entrez une date de naissance valide.");    
+            return false;
+          }
+      };
+
+
+// Vérification participation
+function quantityValidation(){
+  let participation = parseInt(quantity.value);
+  if (participation >=0 && participation <=99)  {
+    quantity.style.borderColor = "green";  
+    arrayFormData[4].setAttribute("data-error","");
+    arrayFormData[4].setAttribute("data-error-visible", false);
+    return true;
+      } else {
+        invalidinput(4, " entrez un nombre entre 0 et 99.");    
+        return false;
       }
   };
+  
 
-//// Vérification quantité
-function quantityValidation(){
-  let p = document.createElement("p");
-  if (typeof quantity.value == "number") {
-    quantity.style.borderColor = "green";
-
+ // fonction qui check si une case de ville est cochée. 
+      function checkedValidation(){ 
+        const checkboxes = document.querySelectorAll("input[name ='location']:checked");
+        if (checkboxes.length === 1) {
+          arrayFormData[5].setAttribute("data-error", "");
+          arrayFormData[5].setAttribute("data-error-visible", false);
+          return true;
+          } else { 
+            invalidinput(5, " cocher une case.");
+            return false;
+          }
+        }     
+     
+// fonction qui check le CGV. 
+function cgvValidation(){ 
+  const cgv = document.getElementById("checkbox1");
+  if (cgv.checked) {
+    arrayFormData[6].setAttribute("data-error", "");
+    arrayFormData[6].setAttribute("data-error-visible", false);
     return true;
-  } else {
-    return  invalidinput(4, "des chiffres", quantity);
-  }
-};
+    } else { 
+      invalidinput(6, " cocher la case.");
+      return false;
+    }
+  } 
 
+//// function qui affiche les messages d'erreur
+function invalidinput(index, context){
+    arrayFormData[index].setAttribute("data-error", "Veuillez"+context);
+    arrayFormData[index].setAttribute("data-error-visible", true)
+   };
+
+
+///// OUVERTURE DES REMERCIMENTS
+function openThanks (){
+  notSend.style.display = "none";
+  merci.style.display = "block";
+  
+}
 
 /// VALIDATION DU MODAL
-///// OUVERTURE DU MODAL
-
-function openThanks (){
-  const merci = document.querySelector(".merci")
-  merci.style.display = "block";
-  merci.style.zindex = "1"
-}
-
-
-function validate() {    
-
-  if (firstNameValidation() && lastNameValidation() && quantityValidation() === true ) {
-     
-     modalbg.style.display = "none";
-     console.log("les deux sont ok")
+function validate() {  
+  const isFirstNameValide =  firstNameValidation();
+  const isLastNameValide = lastNameValidation();
+  const isEmailValide = emailValidation();
+  const isbirthdateValide = birthdateValidation();
+  const isquantityValide = quantityValidation();
+  const isCheck = checkedValidation();
+  const isCgv = cgvValidation();
+  const isValidate =  isFirstNameValide && isLastNameValide && isEmailValide && isbirthdateValide && isquantityValide && isCheck && isCgv;
+  if ( isValidate) { 
      return openThanks();
-  } else {
-    return false;
   }
 }
-//   // for (c in city){
-//   //   alert(city[c]);
-//   // }
 
-//   // let resultFirstName = validFirstName(); 
-//   // alert(resultFirstName)
+//fermture soit a la croix soit au bouton 
+function close() {
+  modalContent.style.display = "none";
+  modalbg.style.display = "none";
+}
 
-// const btnSubmit = document.querySelector(".btn-submit");
-// btnSubmit.addEventListener("click", submit);
+// function qui reinitialise le form
+function reinitForm() {
+  merci.style.display ="none";
+  notSend.style.display = "block";
+  notSend.reset();
+}
+
+// Fermture du modal via le X
+btnClose.addEventListener("click", () => {
+  close();
+  reinitForm();
+  console.log("clicX")
+}, false);
+
+// Fermture du modal merci via le btn "Fermer"
+btnFermer.addEventListener("click", () => {
+  close();
+  reinitForm();
+}, false);
+;
+

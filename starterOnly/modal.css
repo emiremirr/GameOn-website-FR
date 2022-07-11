@@ -70,10 +70,14 @@ img {
 }
 
 @media screen and (max-width: 768px) {
+  .header-logo img{
+    width: 50%;
+}  
   .topnav a {display: none;}
   .topnav a.icon {
     float: right;
     display: block;
+
   }
 }
 
@@ -94,13 +98,20 @@ img {
 
 
  @media screen and (max-width: 540px) {
+  .topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+ 
   .topnav a {display: none;}
   .topnav a.icon {
     float: right;
     display: block;
-    margin-top: -15px;
+    color: red;
   }
-
+  
 } 
 
 main {
@@ -212,9 +223,10 @@ input {
 }
 .formData[data-error]::after {
   content: attr(data-error);
-  font-size: 0.4em;
+  font-size: 1em;
   color: #e54858;
   display: block;
+  left: 0px;
   margin-top: 7px;
   margin-bottom: 7px;
   text-align: right;
@@ -224,6 +236,7 @@ input {
 }
 .formData[data-error-visible="true"]::after {
   opacity: 1;
+  display: flex;
 }
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
@@ -414,6 +427,7 @@ input[data-error]::after {
   overflow: hidden;
   box-shadow: 0 2px 7px 2px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
+  
 }
 .hero-content {
   padding: 51px 67px;
@@ -444,6 +458,7 @@ input[data-error]::after {
 }
 .hero-text {
   width: 146%;
+  font-size: 24px;
   font-weight: normal;
   margin-top: 57px;
   padding: 0;
@@ -482,42 +497,21 @@ footer {
 }
 /* MODAL MERCI */
 .merci{
-  background-color: #232323;
   width: 100%;
-  height: 100%;
-  color: white;
-  font-weight:bolder;
+  text-align: center;
+  align-items: center;
+  font-size: 40px;
+  height: 35rem;
+  padding-top: 30%;
   display: none;
-  position: relative;
+  margin-top: 30%;
 }
-/* CROIX MERCI */
-.merci-close {
-  position: absolute;
-  right: 32px;
- width: 32px;
-  height: 32px;
-  opacity: 1;
-  cursor: pointer;
-  transform: scale(0.7);
+/* bouton fermer modal merci */
+.merci-btn-submit {
+  margin: 60% auto;
 }
-.merci-close:before,
-.merci-close:after {
-  position: absolute;
-  left: 15px;
-  content: " ";
-  height: 33px;
-  width: 3px;
-  background-color: #fff;
-}
-.merci-close:before {
-  transform: rotate(45deg);
-}
-.merci-close:after {
-  transform: rotate(-45deg);
-}
-
-
 @media screen and (max-width: 800px) {
+  
   .hero-section {
     display: block;
     box-shadow: unset;

@@ -18,8 +18,8 @@
     </div>
     <div class="main-navbar">
       
-      <a href="#" class="active"><span>Accueil</span></a>
-      <a href="#"><span>Détails de l'évènement</span></a>
+      <!-- <a href="#" class="active"><span>Accueil</span></a> -->
+      <a href="#"class="active"><span>Détails de l'évènement</span></a>
       <a href="#"><span>À propos</span></a>
       <a href="#"><span>Contact</span></a>
       <a href="#"><span>Évènements passés</span></a>
@@ -55,6 +55,16 @@
       <div class="bground">
         <div class="content">
           <span class="close"></span>
+          <!-- confirmation -->
+          <div class="merci">
+            <p class="merci-text">
+              Merci pour <br>
+              votre inscription.
+            </p>
+            <input class="btn-submit merci-btn-submit" type="submit" value="Fermer">
+          </div>
+
+          <!-- formulaire à remplir -->
           <div class="modal-body">
             <form
               name="reserve"
@@ -81,6 +91,7 @@
                   type="text"
                   id="last"
                   name="last"
+                  minlength="2"
                 /><br>
               </div>
               <div
@@ -160,7 +171,7 @@
                   type="radio"
                   id="location5"
                   name="location"
-                  value="Boston="
+                  value="Boston"
                 />
                 <label class="checkbox-label" for="location5">
                   <span class="checkbox-icon"></span>
@@ -206,19 +217,11 @@
                 value="C'est parti"
               />
             </form>
+            
           </div>
         </div>
       </div>
-      <div class="merci">
-        <span class="merci-close close"></span>
-        <p class="merci-text">
-          Merci pour <br>
-          votre inscription.
-        </p>
-        <button class="btn-close modal-btn">
-          Fermer
-        </button>
-      </div>
+      
     </main>
     <footer>
       <p class="copyrights">
