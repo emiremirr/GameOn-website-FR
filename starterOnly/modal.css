@@ -241,6 +241,10 @@ input {
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
+
+
+
+
 /* 
 input[data-error]::after {
     content: attr(data-error);
@@ -491,9 +495,7 @@ input[data-error]::after {
   display: none;
 }
 footer {
-  padding-left: 2vw;
   padding-right: 2vw;
-  margin: 0 20px;
 }
 /* MODAL MERCI */
 .merci{
