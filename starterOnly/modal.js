@@ -36,7 +36,7 @@ let terms ="";
 let arrayFormData = [];
 let citys = [];
 let p = document.createElement("p"); 
-let NameRegex = /^[A-Za-zéèïù\- ]*$/;
+let NameRegex = /^[A-Za-zéèïùç\- ]*$/;
 let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ ;
 let birthdateRegex = /(\d{4})-(\d{2})-(\d{2})/;
 
@@ -46,20 +46,28 @@ lastName  = document.getElementById("last");
 email = document.getElementById("email");
 birthdate = document.getElementById("birthdate");
 quantity = document.getElementById("quantity");
-const notSend = document.querySelector("div.modal-body form[name='reserve']");
+const bodyForm = document.querySelector("div.modal-body form[name='reserve']");
 const btnClose = document.querySelector(".close");
 const modalContent = document.querySelector(".content");
 const merci = document.querySelector(".merci");
-const btnFermer = document.querySelector(".merci-btn-submit");
 
 
 // (e) pour empecher l'action par défaut au submit
-notSend.addEventListener('submit', (e) => {
+bodyForm.addEventListener('submit', (e) => {
   e.preventDefault();
 }, false);
 
 // boucle sur chaque classe formdata
 formData.forEach((data) => arrayFormData.push(data));
+
+//// function qui affiche les messages d'erreur
+function invalidinput(index, context){
+  arrayFormData[index].setAttribute("data-error", "Veuillez"+context);
+  arrayFormData[index].setAttribute("data-error-visible", true)
+ };
+
+
+
 
   // Vérification du Prénom
 function firstNameValidation(){
@@ -155,19 +163,7 @@ function cgvValidation(){
     }
   } 
 
-//// function qui affiche les messages d'erreur
-function invalidinput(index, context){
-    arrayFormData[index].setAttribute("data-error", "Veuillez"+context);
-    arrayFormData[index].setAttribute("data-error-visible", true)
-   };
 
-
-///// OUVERTURE DES REMERCIMENTS
-function openThanks (){
-  notSend.style.display = "none";
-  merci.style.display = "block";
-  
-}
 
 /// VALIDATION DU MODAL
 function validate() {  
@@ -184,18 +180,50 @@ function validate() {
   }
 }
 
+
+///// OUVERTURE DES REMERCIMENTS
+function openThanks (){
+  
+  // création DOM pour le message de remerciement
+  let newP = document.createElement('p');
+  let newInput = document.createElement('input');
+  let merciText = document.createTextNode(" Merci pour <br> votre inscription.");
+  let merciClass = document.getElementsByName('merci');
+  newP.className="merci-text";
+  newInput.classList="btn-submit merci-btn-submit";
+  newInput.value="Fermer";
+  newInput.type = "submit";
+  console.log(merciClass)
+  
+  // insertion de la div à un endroit précis (après le span close)
+  btnClose.insertAdjacentHTML('afterend','<div class="merci"></div>');
+  const merci = document.querySelector(".merci");
+  
+  merci.appendChild(newP);
+  newP.appendChild(merciText);
+  merci.appendChild(newInput);
+  
+  bodyForm.style.display = "none";
+  merci.style.display = "block";
+  
+  
+
 //fermture soit a la croix soit au bouton 
 function close() {
   modalContent.style.display = "none";
   modalbg.style.display = "none";
 }
 
+
+
 // function qui reinitialise le form
 function reinitForm() {
+  
   merci.style.display ="none";
-  notSend.style.display = "block";
-  notSend.reset();
+  bodyForm.style.display = "block";
+  bodyForm.reset();
 }
+
 
 // Fermture du modal via le X
 btnClose.addEventListener("click", () => {
@@ -204,10 +232,19 @@ btnClose.addEventListener("click", () => {
   console.log("clicX")
 }, false);
 
-// Fermture du modal merci via le btn "Fermer"
-btnFermer.addEventListener("click", () => {
-  close();
-  reinitForm();
-}, false);
+ // Fermture du modal merci via le btn "Fermer"
+ const btnFermer = document.querySelector(".merci-btn-submit");
+ btnFermer.addEventListener("click", () => {
+   close();
+   reinitForm();
+   bodyForm.reset();
+ }, false);
 ;
+
+}
+
+
+
+
+
 
