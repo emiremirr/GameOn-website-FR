@@ -36,7 +36,7 @@ let terms ="";
 let arrayFormData = [];
 let citys = [];
 let p = document.createElement("p"); 
-let NameRegex = /^[A-Za-zéèïùç\- ]*$/;
+let NameRegex = /^[A-Za-zéèïùçü\- ]*$/;
 let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ ;
 let birthdateRegex = /(\d{4})-(\d{2})-(\d{2})/;
 
@@ -59,7 +59,7 @@ bodyForm.addEventListener('submit', (e) => {
 
 // boucle sur chaque classe formdata
 formData.forEach((data) => arrayFormData.push(data));
-
+console.log(arrayFormData)
 //// function qui affiche les messages d'erreur
 function invalidinput(index, context){
   arrayFormData[index].setAttribute("data-error", "Veuillez"+context);
@@ -124,6 +124,8 @@ function firstNameValidation(){
 
 // Vérification participation
 function quantityValidation(){
+  
+  console.log(typeof (quantity.value))
   let participation = parseInt(quantity.value);
   if (participation >=0 && participation <=99)  {
     quantity.style.borderColor = "green";  
@@ -187,14 +189,13 @@ function openThanks (){
   // création DOM pour le message de remerciement
   let newP = document.createElement('p');
   let newInput = document.createElement('input');
-  let merciText = document.createTextNode(" Merci pour <br> votre inscription.");
-  let merciClass = document.getElementsByName('merci');
+  let merciText = document.createTextNode(" Merci pour votre inscription.");
+  
   newP.className="merci-text";
   newInput.classList="btn-submit merci-btn-submit";
   newInput.value="Fermer";
   newInput.type = "submit";
-  console.log(merciClass)
-  
+    
   // insertion de la div à un endroit précis (après le span close)
   btnClose.insertAdjacentHTML('afterend','<div class="merci"></div>');
   const merci = document.querySelector(".merci");
@@ -205,16 +206,6 @@ function openThanks (){
   
   bodyForm.style.display = "none";
   merci.style.display = "block";
-  
-  
-
-//fermture soit a la croix soit au bouton 
-function close() {
-  modalContent.style.display = "none";
-  modalbg.style.display = "none";
-}
-
-
 
 // function qui reinitialise le form
 function reinitForm() {
@@ -224,27 +215,35 @@ function reinitForm() {
   bodyForm.reset();
 }
 
-
-// Fermture du modal via le X
-btnClose.addEventListener("click", () => {
-  close();
-  reinitForm();
-  console.log("clicX")
-}, false);
-
  // Fermture du modal merci via le btn "Fermer"
- const btnFermer = document.querySelector(".merci-btn-submit");
+const btnFermer = document.querySelector(".merci-btn-submit");
  btnFermer.addEventListener("click", () => {
    close();
    reinitForm();
    bodyForm.reset();
  }, false);
-;
+// fermture du modal via le X après avoir ouvert les remerciements
+ btnClose.addEventListener("click", () => {
+  bodyForm.style.display ="block"
+  modalbg.style.display="none"
+  merci.style.display="none"
+  bodyForm.reset();
+}, false);
 
+;}
+
+
+//fermture soit a la croix ou bouton fermer
+function close() {
+  modalContent.style.display = "none";
+  modalbg.style.display = "none";
 }
 
 
-
-
-
-
+// Fermture du modal via le X lors de la saisie du formulaire
+btnClose.addEventListener("click", () => {
+  modalContent.style.display ="none"
+  modalbg.style.display="none"
+  bodyForm.reset();
+  console.log("clicX")
+}, false);
